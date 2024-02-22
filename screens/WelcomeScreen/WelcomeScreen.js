@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView, Image, View, Text, Button, Pressable } from 'react-native';
 import Animated, { FadeInDown, FadeInLeft, FadeInUp } from 'react-native-reanimated';
-
+import LottieView from 'lottie-react-native';
 
 
 const WelcomeScreen = () => {
@@ -10,6 +10,12 @@ const WelcomeScreen = () => {
 
     return (
         <SafeAreaView className="flex-1 items-center  h-full w-full relative bg-sky-50">
+
+            <View className="absolute top-10">
+
+                <LottieView source={require('../../assets/animation/cloud.json')} autoPlay loop className="z-50 h-44 w-full" />
+            </View>
+
             <Animated.View entering={FadeInUp.delay(100).duration(1000)} className="z-50 mt-20 px-3">
                 <Text className="font-bold text-4xl text-[#8BD8EA]">Welcome to <Text className="italic font-extrabold">TripWallet!</Text></Text>
             </Animated.View>
