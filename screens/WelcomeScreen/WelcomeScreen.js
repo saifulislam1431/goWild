@@ -13,7 +13,10 @@ const WelcomeScreen = () => {
 
             <View className="absolute top-10">
 
-                <LottieView source={require('../../assets/animation/cloud.json')} autoPlay loop className="z-50 h-44 w-full" />
+                <LottieView source={require('../../assets/animation/cloud.json')} autoPlay loop style={{
+                    width: 800,
+                    height: 250,
+                }} />
             </View>
 
             <Animated.View entering={FadeInUp.delay(100).duration(1000)} className="z-50 mt-20 px-3">
