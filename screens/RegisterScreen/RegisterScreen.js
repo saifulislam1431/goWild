@@ -38,7 +38,7 @@ const RegisterScreen = () => {
             password: password,
             file
         }
-        log.info(userInfo)
+        navigation.navigate("Home");
     }
     return (
         <SafeAreaView className="flex-1 h-full w-full items-center justify-center relative">

@@ -1,10 +1,17 @@
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text, SafeAreaView } from 'react-native';
+import NavHeader from '../NavHeader/NavHeader';
 
 const ManageTourScreen = () => {
     return (
-        <View className="flex-1 items-center justify-center h-full w-full">
-            <Text className="font-bold text-5xl">ManageTourScreen</Text>
-        </View>
+        <SafeAreaView className="flex-1 items-center h-full w-full">
+            <View>
+                <NavHeader />
+            </View>
+
+            <View>
+                <Text>Hello</Text>
+            </View>
+        </SafeAreaView>
     );
 }
 

@@ -18,7 +18,7 @@ const LoginScreen = () => {
             email: email,
             password: password
         }
-        log.info(userInfo)
+        navigation.navigate("Home");
     }
     return (
         <SafeAreaView className="flex-1 h-full w-full items-center justify-center relative">

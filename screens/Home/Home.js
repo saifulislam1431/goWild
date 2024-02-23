@@ -1,10 +1,10 @@
+import React from 'react';
 import { View, StyleSheet, Text, SafeAreaView } from 'react-native';
 import NavHeader from '../NavHeader/NavHeader';
 
-const CreateTourScreen = () => {
+const Home = () => {
     return (
-
-        <SafeAreaView className="flex-1 items-center h-full w-full">
+        <SafeAreaView className="flex-1 h-full w-full">
             <View>
                 <NavHeader />
             </View>
@@ -16,6 +16,5 @@ const CreateTourScreen = () => {
     );
 }
 
-const styles = StyleSheet.create({})
 
-export default CreateTourScreen;
+export default Home;
