@@ -12,7 +12,7 @@ const NavHeader = () => {
 
 
     return (
-        <SafeAreaView className="flex w-full flex-row items-center justify-between my-5 px-2">
+        <SafeAreaView className="flex w-full flex-row items-center justify-between my-5 px-2 z-40">
             <View>
                 <Image source={{
                     uri: "https://i.ibb.co/tqnD2S3/man.png"
