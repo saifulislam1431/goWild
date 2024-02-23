@@ -4,6 +4,7 @@ import CreateTourScreen from '../CreateTourScreen/CreateTourScreen';
 import TourSummaryScreen from '../TourSummaryScreen/TourSummaryScreen';
 import ManageTourScreen from '../ManageTourScreen/ManageTourScreen';
 import Home from '../Home/Home';
+import TourManageDetails from '../ManageTourScreen/TourManageDetails';
 
 const Drawer = createDrawerNavigator();
 
@@ -49,6 +50,9 @@ const HomeScreen = () => {
                 drawerContentStyle: {
                     backgroundColor: "#8BD8EA"
                 }
+            }} />
+            <Drawer.Screen name="Manage_Tour_Details" component={TourManageDetails} options={{
+                drawerItemStyle: { display: 'none' }
             }} />
         </Drawer.Navigator>
     );

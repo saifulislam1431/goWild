@@ -1,0 +1,72 @@
+[
+    {
+        "id": 1,
+        "image": "https://i.ibb.co/61N2X1g/house24.jpg",
+        "tourName": "Historical City Tour",
+        "description": "Explore the rich history and culture of our city with this guided tour.",
+        "itinerary": "Day 1: Visit historic landmarks, Day 2: Explore museums, Day 3: Attend cultural events",
+        "duration": "3 days",
+        "meetingPoint": "City Hall Square",
+        "transportation": "Walking",
+        "cost": 150,
+        "startDate": "2024-03-15",
+        "endDate": "2024-03-17",
+        "destination": "City ABC"
+    },
+    {
+        "id": 2,
+        "image": "https://i.ibb.co/61N2X1g/house24.jpg",
+        "tourName": "Adventure Trek",
+        "description": "Embark on an exciting trekking adventure through scenic trails and breathtaking landscapes.",
+        "itinerary": "Day 1: Hike to base camp, Day 2: Summit mountain peak, Day 3: Return journey",
+        "duration": "3 days",
+        "meetingPoint": "Visitor Center",
+        "transportation": "Hiking",
+        "cost": 200,
+        "startDate": "2024-04-10",
+        "endDate": "2024-04-12",
+        "destination": "Mountain Range XYZ"
+    },
+    {
+        "id": 3,
+        "image": "https://i.ibb.co/61N2X1g/house24.jpg",
+        "tourName": "Cultural Immersion Tour",
+        "description": "Immerse yourself in the local culture, traditions, and cuisine of our vibrant city.",
+        "itinerary": "Day 1: Visit local markets, Day 2: Attend cooking classes, Day 3: Participate in cultural performances",
+        "duration": "3 days",
+        "meetingPoint": "Town Square",
+        "transportation": "Bus",
+        "cost": 180,
+        "startDate": "2024-05-20",
+        "endDate": "2024-05-22",
+        "destination": "Town ABC"
+    },
+    {
+        "id": 4,
+        "image": "https://i.ibb.co/61N2X1g/house24.jpg",
+        "tourName": "Beach Getaway",
+        "description": "Relax and unwind on pristine beaches with crystal-clear waters and golden sands.",
+        "itinerary": "Day 1: Beach activities, Day 2: Snorkeling excursion, Day 3: Beachside barbecue",
+        "duration": "3 days",
+        "meetingPoint": "Beach Resort",
+        "transportation": "Boat",
+        "cost": 250,
+        "startDate": "2024-06-15",
+        "endDate": "2024-06-17",
+        "destination": "Beachside Town XYZ"
+    },
+    {
+        "id": 5,
+        "image": "https://i.ibb.co/61N2X1g/house24.jpg",
+        "tourName": "Wildlife Safari",
+        "description": "Embark on an unforgettable safari adventure and witness incredible wildlife in their natural habitat.",
+        "itinerary": "Day 1: Safari drive, Day 2: Guided nature walk, Day 3: Bird watching",
+        "duration": "3 days",
+        "meetingPoint": "Safari Lodge",
+        "transportation": "Safari Jeep",
+        "cost": 300,
+        "startDate": "2024-07-10",
+        "endDate": "2024-07-12",
+        "destination": "Wildlife Reserve ABC"
+    }
+]
