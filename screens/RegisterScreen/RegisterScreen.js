@@ -5,9 +5,11 @@ import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { logger } from "react-native-logs";
 import * as ImagePicker from 'expo-image-picker';
+import { useRegisterUserMutation } from '../../redux/features/apis/auth/authApi';
 
 
 const RegisterScreen = () => {
+    const [registerUser] = useRegisterUserMutation()
     const log = logger.createLogger();
     const [email, setEmail] = useState("");
     const [user_name, setUserName] = useState("");
@@ -24,6 +26,7 @@ const RegisterScreen = () => {
         });
 
         if (!result.canceled) {
+            setFile(result)
             console.log(result);
         } else {
             alert('You did not select any image.');
@@ -31,14 +34,16 @@ const RegisterScreen = () => {
     };
 
 
-    const onSubmit = () => {
+    const onSubmit = async () => {
         const userInfo = {
             userName: user_name,
             email: email,
             password: password,
-            file
+            file: file ? file : "https://i.ibb.co/rfZKBdg/man.png"
         }
-        navigation.navigate("Home");
+        const res = await registerUser(userInfo).unwrap();
+        console.log(res);
+        // navigation.navigate("Home");
     }
     return (
         <SafeAreaView className="flex-1 h-full w-full items-center justify-center relative">
