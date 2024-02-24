@@ -18,8 +18,8 @@ const ManageTourScreen = () => {
 
     if (loading) {
         return (
-            <View style={styles.container}>
-                <ActivityIndicator size="large" color="#0000ff" />
+            <View>
+                <ActivityIndicator size="large" color="#32a1b9" />
             </View>
         );
     }

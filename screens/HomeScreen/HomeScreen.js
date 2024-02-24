@@ -52,7 +52,13 @@ const HomeScreen = () => {
                 }
             }} />
             <Drawer.Screen name="Manage_Tour_Details" component={TourManageDetails} options={{
-                drawerItemStyle: { display: 'none' }
+                title: "Manage Tour Details",
+                drawerItemStyle: { display: 'none' },
+                drawerActiveTintColor: "#32a1b9",
+                drawerActiveBackgroundColor: "#ffffff",
+                drawerContentStyle: {
+                    backgroundColor: "#8BD8EA"
+                }
             }} />
         </Drawer.Navigator>
     );
