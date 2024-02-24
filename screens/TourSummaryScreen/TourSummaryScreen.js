@@ -1,17 +1,18 @@
-import { View, StyleSheet, Text, SafeAreaView } from 'react-native';
+import { View, StyleSheet, Text, SafeAreaView, Image, ScrollView } from 'react-native';
 import NavHeader from '../NavHeader/NavHeader';
 
 const TourSummaryScreen = () => {
     return (
-        <SafeAreaView className="flex-1 items-center h-full w-full">
-            <View>
-                <NavHeader />
+        <ScrollView className="flex-1 h-full w-full relative">
+            <View className="flex-1 relative">
+                <View className="absolute">
+                    <NavHeader />
+                </View>
+                <View className="w-full h-[380px] -z-10 relative flex items-center justify-center">
+                    <Image source={{ uri: "https://i.ibb.co/R6k17Jd/banner3.png" }} className="h-full w-full opacity-80" />
+                </View>
             </View>
-
-            <View>
-                <Text>Hello</Text>
-            </View>
-        </SafeAreaView>
+        </ScrollView>
     );
 }
 

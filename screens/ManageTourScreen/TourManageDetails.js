@@ -84,6 +84,26 @@ const TourManageDetails = () => {
             </View>
 
             <View className="my-8 p-3 rounded-md bg-sky-50 mx-2 shadow-lg">
+                <Text className="font-bold text-base text-[#32a1b9]">Tour Mate:</Text>
+                {
+                    data?.friends ? data?.friends?.map((friend, indx) => <View key={indx} className="my-5 bg-sky-100/75 p-3 rounded-md flex flex-row items-center justify-between border border-[#32a1b9]">
+                        <View>
+                            <View className="flex flex-row items-center space-x-2">
+                                <Image source={{
+                                    uri: "https://i.ibb.co/tqnD2S3/man.png"
+                                }} className="w-11 h-11" />
+
+                                <Text className="font-bold text-xl text-[#32a1b9]">Saiful Islam</Text>
+                            </View>
+                        </View>
+                        <View>
+                            <Text className="font-bold text-xl text-[#32a1b9]">Wallet: 0</Text>
+                        </View>
+                    </View>) : <Text className="font-bold text-base text-red-500"> No Friend added yet! </Text>
+                }
+            </View>
+
+            <View className="my-8 p-3 rounded-md bg-sky-50 mx-2 shadow-lg">
                 <View className="space-y-2">
                     <Text className="font-bold text-base">Description: <Text className="text-[#32a1b9]">{data?.description}</Text></Text>
                     <Text className="font-bold text-base">Itinerary: </Text>

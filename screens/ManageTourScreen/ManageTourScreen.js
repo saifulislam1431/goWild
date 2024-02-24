@@ -42,7 +42,9 @@ const ManageTourScreen = () => {
                 {/* Data*/}
                 <View className="flex px-2 my-10 w-full z-50 h-full">
                     {
-                        tours?.map(item => <SingleTour key={item?.id} item={item} />)
+                        tours.length > 0 ? tours?.map(item => <SingleTour key={item?.id} item={item} />) : <View>
+                            <Text className="text-2xl font-bold text-red-500">Empty Tour List!</Text>
+                        </View>
                     }
                 </View>
             </View>
