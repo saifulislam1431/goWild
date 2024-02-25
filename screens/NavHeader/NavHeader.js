@@ -1,13 +1,24 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { Image, TextInput } from 'react-native';
+import { Alert, Image, TextInput } from 'react-native';
 import { View, StyleSheet, SafeAreaView, Text, Pressable } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 
 const NavHeader = () => {
 
+    const navigation = useNavigation();
 
-    const handleOut = () => {
-        console.log("Clicked");
+    const handleOut = async () => {
+        await AsyncStorage.removeItem('user');
+        Alert.alert(
+            "🎉 Success 🎉",
+            "You have successfully logged out!",
+            [
+                { text: "OK", onPress: () => navigation.navigate("Login") }
+            ],
+            { cancelable: false }
+        );
     }
 
 
@@ -29,7 +40,7 @@ const NavHeader = () => {
             </View>
 
             <View>
-                <Pressable>
+                <Pressable onPress={handleOut}>
                     <Text className="bg-[#6fb98f] px-3  py-3 rounded-full text-white font-medium border border-[#6fb98f]">
                         <Icon name="logout" size={17} color="#ffffff" />
                     </Text>

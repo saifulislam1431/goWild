@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
-import { SafeAreaView, Image, Text, Pressable, TextInput, View, TouchableOpacity, Button } from 'react-native';
+import { SafeAreaView, Image, Text, Pressable, TextInput, View, TouchableOpacity, Button, Alert, ScrollView } from 'react-native';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import Icon from 'react-native-vector-icons/AntDesign';
 import * as ImagePicker from 'expo-image-picker';
@@ -12,6 +12,7 @@ const token = "a8e0b1302fb574e62e2c6af3cd739af7";
 const RegisterScreen = () => {
     const hosting_url = `https://api.imgbb.com/1/upload?key=${token}`;
     const [email, setEmail] = useState("");
+    const [error, setError] = useState("");
     const [user_name, setUserName] = useState("");
     const [password, setPassword] = useState("");
     const [file, setFile] = useState(null)
@@ -36,49 +37,68 @@ const RegisterScreen = () => {
 
 
     const onSubmit = async () => {
-        const formData = new FormData();
-        formData.append('image', {
-            uri: file,
-            type: 'image/jpeg',
-            name: 'image.jpg',
-        });
-
-        try {
-            fetch(hosting_url, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'multipart/form-data',
-                },
-            })
-                .then(res => res.json())
-                .then(async (resData) => {
-                    const userInfo = {
-                        userName: user_name,
-                        email: email,
-                        password: password,
-                        profile: resData?.data.display_url ? resData?.data.display_url : "https://i.ibb.co/rfZKBdg/man.png"
-                    }
-
-                    const res = await axios.post("https://tour-management-server-beryl.vercel.app/api/v1/register", userInfo);
-                    if (res?.data?.success) {
-                        navigation.navigate("Login")
-
-
-                    }
-                })
-            // console.log(data);
-            // Do something with the response, like saving the image URL or handling errors
-        } catch (error) {
-            console.error('Error uploading image:', error);
+        if (email === "") {
+            return setError("Email is required.");
         }
+        else if (user_name === "") {
+            return setError("User name is required.");
+        }
+        else if (password === "") {
+            return setError("password is required.");
+        } else {
+            const formData = new FormData();
+            formData.append('image', {
+                uri: file,
+                type: 'image/jpeg',
+                name: 'image.jpg',
+            });
+
+            try {
+                fetch(hosting_url, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'multipart/form-data',
+                    },
+                })
+                    .then(res => res.json())
+                    .then(async (resData) => {
+                        const userInfo = {
+                            userName: user_name,
+                            email: email,
+                            password: password,
+                            profile: resData?.data.display_url ? resData?.data.display_url : "https://i.ibb.co/rfZKBdg/man.png"
+                        }
+
+                        const res = await axios.post("https://tour-management-server-beryl.vercel.app/api/v1/register", userInfo);
+                        if (res?.data?.success) {
+                            setError("")
+                            Alert.alert(
+                                "🎉 Success 🎉",
+                                "You have successfully registered! Please login.",
+                                [
+                                    { text: "OK" }
+                                ],
+                                { cancelable: false }
+                            );
+
+                        }
+                    })
+                // console.log(data);
+                // Do something with the response, like saving the image URL or handling errors
+            } catch (error) {
+                console.error('Error uploading image:', error);
+            }
+        }
+
+
 
 
 
     }
     return (
-        <SafeAreaView className="flex-1 h-full w-full items-center justify-center relative">
+        <ScrollView className="flex-1 h-full w-full relative">
 
 
             <Animated.View entering={FadeInUp.delay(100).duration(1000)} className="z-50 px-3 mt-4 absolute top-8 left-0">
@@ -128,6 +148,12 @@ const RegisterScreen = () => {
                     </TouchableOpacity>
                 </Animated.View>
 
+                {
+                    error && <View>
+                        <Text className="text-base font-medium text-red-500">{error}</Text>
+                    </View>
+                }
+
                 <Animated.View entering={FadeInDown.delay(300).duration(1000).springify()} className="w-full">
                     <TouchableOpacity className=" bg-[#8BD8EA] p-4 rounded-2xl w-[95%] mx-auto" onPress={onSubmit}>
                         <Text className="text-white text-center font-semibold">Register</Text>
@@ -151,7 +177,7 @@ const RegisterScreen = () => {
             <Image source={{
                 uri: "https://i.ibb.co/YdtZqGS/bg1-01.png"
             }} className="h-full w-full absolute top-0"></Image>
-        </SafeAreaView>
+        </ScrollView>
     );
 }
 

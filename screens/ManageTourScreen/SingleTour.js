@@ -3,12 +3,16 @@ import { View, StyleSheet, Text, Image, Pressable } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Animated, { FadeInDown, FadeInLeft, FadeInUp } from 'react-native-reanimated';
 import { useNavigation } from '@react-navigation/native';
+import moment from 'moment';
+import useTours from '../../hooks/useTours';
 
 const SingleTour = ({ item }) => {
     const navigation = useNavigation();
+    const { refetch } = useTours();
 
     const handlePress = () => {
-        navigation.navigate('Manage_Tour_Details', { id: item?.id });
+        navigation.navigate('Manage_Tour_Details', { id: item?._id });
+        refetch();
     };
 
     return (
@@ -24,7 +28,7 @@ const SingleTour = ({ item }) => {
                 </View>
                 <View className="flex flex-row items-center gap-1">
                     <Text><Icon name='calendar-alt' size={15} color="#32a1b9" /></Text>
-                    <Text className="font-semibold text-[#32a1b9]">{item?.startDate}</Text>
+                    <Text className="font-semibold text-[#32a1b9]">{moment(item?.startDate).format('l')} </Text>
                 </View>
                 <Text className="font-semibold text-[#32a1b9]">{item?.duration}</Text>
                 <View className="flex flex-row items-center gap-1">

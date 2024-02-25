@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Modal, Text, Button, Pressable, TextInput, TouchableOpacity, ScrollView } from 'react-native';
+import { View, StyleSheet, Modal, Text, Button, Pressable, TextInput, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import Icon from 'react-native-vector-icons/AntDesign';
 import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
+import useTours from '../../hooks/useTours';
 
 const UpdateModal = ({ isModalUpdateVisible, data, handleUpdate }) => {
-    const navigation = useNavigation();
+    const { refetch } = useTours()
     const [tourName, setTourName] = useState(data?.tourName);
     const [description, setDescription] = useState(data?.description);
     const [itinerary, setItinerary] = useState(data?.itinerary);
@@ -14,14 +16,16 @@ const UpdateModal = ({ isModalUpdateVisible, data, handleUpdate }) => {
     const [duration, setDuration] = useState(data?.duration);
     const [meetingPoint, setMeetingPoint] = useState(data?.meetingPoint);
     const [transportation, setTransportation] = useState(data?.transportation);
-    const [cost, setCost] = useState(data?.cost.toString());
+    const [cost, setCost] = useState(data?.cost);
     const [startDate, setStartDate] = useState(data?.startDate);
     const [endDate, setEndDate] = useState(data?.endDate);
     const [isStartDatePickerVisible, setStartDatePickerVisibility] = useState(false);
     const [isEndDatePickerVisible, setEndDatePickerVisibility] = useState(false);
 
-    const onSubmit = () => {
-        const data = {
+    const onSubmit = async () => {
+        const updatedData = {
+            organizerId: data?.organizerId,
+            organizerBy: data?.organizerBy,
             tourName,
             description,
             itinerary,
@@ -33,8 +37,20 @@ const UpdateModal = ({ isModalUpdateVisible, data, handleUpdate }) => {
             endDate,
             destination
         }
-        console.log(data);
-        handleUpdate();
+        const response = await axios.patch(`https://tour-management-server-beryl.vercel.app/api/v1/update-tour/${data?._id}`, updatedData)
+        if (response?.data?.modifiedCount > 0) {
+            refetch();
+            Alert.alert(
+                "🎉 Success 🎉",
+                "Tour Updated!",
+                [
+                    { text: "OK" }
+                ],
+                { cancelable: false }
+            );
+            // handleUpdate();
+        }
+
     }
     return (
         <View>
@@ -42,6 +58,16 @@ const UpdateModal = ({ isModalUpdateVisible, data, handleUpdate }) => {
                 isModalUpdateVisible && <Modal isVisible={isModalUpdateVisible}>
                     <ScrollView className="flex-1 mx-2 my-5">
 
+                        <View className="flex flex-row items-center justify-between">
+                            <Pressable
+                                onPress={handleUpdate}
+                            >
+                                <Text className="bg-[#8BD8EA] px-3  py-3 rounded-full text-white font-medium border border-[#8BD8EA]">
+                                    <Icon name="left" size={20} color="#ffffff" />
+                                </Text>
+                            </Pressable>
+
+                        </View>
                         <View>
                             <Text className="font-bold text-2xl text-center text-[#32a1b9]">Update Tour Details!</Text>
                         </View>
@@ -124,7 +150,7 @@ const UpdateModal = ({ isModalUpdateVisible, data, handleUpdate }) => {
                                 <TextInput
                                     className="w-full"
                                     placeholder="Cost"
-                                    value={cost}
+                                    value={cost.toString()}
                                     placeholderTextColor={"#32a1b9"}
                                     onChangeText={setCost}
                                 />
@@ -145,7 +171,7 @@ const UpdateModal = ({ isModalUpdateVisible, data, handleUpdate }) => {
                                 <Pressable onPress={() => setEndDatePickerVisibility(true)} className="border border-[#32a1b9] p-4 rounded-2xl">
                                     <View className="flex flex-row items-center gap-3">
                                         <Text> <Icon name="calendar" size={25} color="#32a1b9" /></Text>
-                                        <Text className="text-[#32a1b9] font-bold">Start Date</Text>
+                                        <Text className="text-[#32a1b9] font-bold">End Date</Text>
                                     </View>
                                     <DateTimePickerModal
                                         isVisible={isEndDatePickerVisible}

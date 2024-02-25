@@ -3,9 +3,23 @@ import { View, StyleSheet, Text, SafeAreaView, ScrollView, Image, Pressable } fr
 import NavHeader from '../NavHeader/NavHeader';
 import CarouselCards from './CarouselCards';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Home = () => {
     const navigation = useNavigation();
+
+
+
+    // const handleLog = async () => {
+    //     const value = await AsyncStorage.getItem('user');
+    //     if (value !== null) {
+
+    //         console.log("User data: ", JSON.parse(value));
+
+    //     } else {
+    //         console.log("Error");
+    //     }
+    // }
 
     return (
         <ScrollView className="flex-1 h-full w-full bg-white relative">
@@ -44,6 +58,11 @@ const Home = () => {
                     >
                         <Text className="font-semibold text-base text-white">Create Your Own Trip</Text>
                     </Pressable>
+                    {/* <Pressable className="bg-[#8BD8EA] py-4 px-8 rounded-2xl border border-[#8BD8EA]"
+                        onPress={handleLog}
+                    >
+                        <Text className="font-semibold text-base text-white">Log</Text>
+                    </Pressable> */}
                 </View>
             </View>
         </ScrollView>

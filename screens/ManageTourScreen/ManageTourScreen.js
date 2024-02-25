@@ -1,29 +1,21 @@
 import { View, StyleSheet, Text, SafeAreaView, ScrollView, Image, ActivityIndicator, FlatList, Pressable } from 'react-native';
 import NavHeader from '../NavHeader/NavHeader';
-import { useEffect, useState } from 'react';
-import tourData from "./tour.json"
 import SingleTour from './SingleTour';
-import Icon from 'react-native-vector-icons/FontAwesome5';
 import Animated, { FadeInUp } from 'react-native-reanimated';
+import useTours from '../../hooks/useTours';
+
 
 const ManageTourScreen = () => {
-    const [loading, setLoading] = useState(true);
-    const [tours, setTours] = useState([]);
+    const { tours, toursFetching } = useTours();
 
-    useEffect(() => {
-        setTours(tourData);
-        setLoading(false);
-    }, []);
-    // console.log(tours);
 
-    if (loading) {
+    if (toursFetching) {
         return (
             <View>
                 <ActivityIndicator size="large" color="#32a1b9" />
             </View>
         );
     }
-
 
 
     return (
@@ -42,7 +34,7 @@ const ManageTourScreen = () => {
                 {/* Data*/}
                 <View className="flex px-2 my-10 w-full z-50 h-full">
                     {
-                        tours.length > 0 ? tours?.map(item => <SingleTour key={item?.id} item={item} />) : <View>
+                        tours.length > 0 ? tours?.map(item => <SingleTour key={item?._id} item={item} />) : <View>
                             <Text className="text-2xl font-bold text-red-500">Empty Tour List!</Text>
                         </View>
                     }

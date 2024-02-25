@@ -1,45 +1,107 @@
-import { View, StyleSheet, Text, SafeAreaView, Image, TextInput, TouchableOpacity, ScrollView, Pressable } from 'react-native';
+import { View, StyleSheet, Text, SafeAreaView, Image, TextInput, TouchableOpacity, ScrollView, Pressable, Alert } from 'react-native';
 import NavHeader from '../NavHeader/NavHeader';
 import Animated, { FadeInDown } from 'react-native-reanimated';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import Icon from 'react-native-vector-icons/AntDesign';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 
 
 const CreateTourScreen = () => {
+
     const navigation = useNavigation();
     const [tourName, setTourName] = useState('');
+    const [user, setUser] = useState(null);
     const [description, setDescription] = useState('');
     const [itinerary, setItinerary] = useState('');
     const [destination, setDestination] = useState('');
     const [duration, setDuration] = useState('');
     const [meetingPoint, setMeetingPoint] = useState('');
     const [transportation, setTransportation] = useState('');
+    const [image, setImage] = useState('');
+    const [error, setError] = useState('');
     const [cost, setCost] = useState(0);
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
     const [isStartDatePickerVisible, setStartDatePickerVisibility] = useState(false);
     const [isEndDatePickerVisible, setEndDatePickerVisibility] = useState(false);
 
-    const onSubmit = () => {
+    const onSubmit = async () => {
 
-
-
-        const data = {
-            tourName,
-            description,
-            itinerary,
-            duration,
-            meetingPoint,
-            transportation,
-            cost,
-            startDate,
-            endDate,
-            destination
+        if (tourName === "") {
+            return setError("Tour name is required.");
         }
-        navigation.navigate("Manage_Tour")
+        else if (description === "") {
+            return setError("Description is required.");
+        }
+        else if (itinerary === "") {
+            return setError("Itinerary is required.");
+        }
+        else if (duration === "") {
+            return setError("Duration is required.");
+        }
+        else if (meetingPoint === "") {
+            return setError("Meeting point is required.");
+        }
+        else if (transportation === "") {
+            return setError("Transportation is required.");
+        }
+        else if (image === "") {
+            return setError("Image is required.");
+        }
+        else if (cost === 0) {
+            return setError("Cost is required.");
+        }
+        else if (destination === "") {
+            return setError("Destination is required.");
+        } else {
+            const data = {
+                organizerBy: user?.email,
+                organizerId: user?._id,
+                tourName,
+                description,
+                itinerary,
+                duration,
+                meetingPoint,
+                transportation,
+                cost,
+                startDate,
+                endDate,
+                destination,
+                image
+            }
+            const res = await axios.post("https://tour-management-server-beryl.vercel.app/api/v1/tours", data);
+            if (res?.data?.success) {
+                Alert.alert(
+                    "🎉 Success 🎉",
+                    "Tour created.",
+                    [
+                        { text: "OK" }
+                    ],
+                    { cancelable: false }
+                );
+
+            }
+            navigation.navigate("Manage_Tour")
+        }
+
+
     }
+
+    const fetchUser = async () => {
+        const value = await AsyncStorage.getItem('user');
+        const info = JSON.parse(value);
+        setUser(info)
+    }
+
+    useEffect(() => {
+        fetchUser()
+    }, [])
+
+    // console.log(user);
+
     return (
 
         <ScrollView className="flex-1 h-full w-full relative">
@@ -74,6 +136,16 @@ const CreateTourScreen = () => {
                         placeholder="Destination"
                         placeholderTextColor={"#32a1b9"}
                         onChangeText={setDestination}
+                    />
+
+                </Animated.View>
+
+                <Animated.View entering={FadeInDown.delay(100).duration(1000).springify()} className="bg-[#32a1b9]/10 p-4 rounded-2xl w-[95%] mx-auto border border-[#32a1b9]">
+                    <TextInput
+                        className="w-full"
+                        placeholder="Image URl"
+                        placeholderTextColor={"#32a1b9"}
+                        onChangeText={setImage}
                     />
 
                 </Animated.View>
@@ -147,7 +219,7 @@ const CreateTourScreen = () => {
                     <Pressable onPress={() => setEndDatePickerVisibility(true)} className="border border-[#32a1b9] p-4 rounded-2xl">
                         <View className="flex flex-row items-center gap-3">
                             <Text> <Icon name="calendar" size={25} color="#32a1b9" /></Text>
-                            <Text className="text-[#32a1b9] font-bold">Start Date</Text>
+                            <Text className="text-[#32a1b9] font-bold">End Date</Text>
                         </View>
                         <DateTimePickerModal
                             isVisible={isEndDatePickerVisible}

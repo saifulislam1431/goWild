@@ -3,11 +3,22 @@ import { SafeAreaView, Image, View, Text, Button, Pressable } from 'react-native
 import Animated, { FadeInDown, FadeInLeft, FadeInUp } from 'react-native-reanimated';
 import LottieView from 'lottie-react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
+import useUser from '../../hooks/useUser';
 
 
 const WelcomeScreen = () => {
-
     const navigation = useNavigation();
+    const { user } = useUser();
+
+
+
+    const handleNavigate = () => {
+        if (user) {
+            navigation.navigate("Home")
+        } else {
+            navigation.navigate("Login")
+        }
+    }
 
     return (
         <SafeAreaView className="flex-1 items-center  h-full w-full relative bg-white">
@@ -28,7 +39,7 @@ const WelcomeScreen = () => {
             </Animated.View>
             <Animated.View className="z-50" entering={FadeInDown.delay(300).duration(1000)}>
                 <Pressable
-                    onPress={() => navigation.navigate("Login")}
+                    onPress={handleNavigate}
                     className="bg-[#8BD8EA] px-4 py-3 rounded border border-[#8BD8EA] flex flex-row items-center"
                 >
                     <Text className="text-white font-medium ">Get Started </Text>

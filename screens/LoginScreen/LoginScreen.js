@@ -1,24 +1,50 @@
 import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
-import { SafeAreaView, Image, Text, Pressable, TextInput, View, TouchableOpacity } from 'react-native';
+import { SafeAreaView, Image, Text, Pressable, TextInput, View, TouchableOpacity, Alert, StyleSheet } from 'react-native';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import Icon from 'react-native-vector-icons/AntDesign';
-import { logger } from "react-native-logs";
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 
 const LoginScreen = () => {
-    const log = logger.createLogger();
+    const [error, setError] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
     const navigation = useNavigation();
 
-    const onSubmit = () => {
-        const userInfo = {
-            email: email,
-            password: password
+    const onSubmit = async () => {
+        if (email === "") {
+            return setError("Email is required.");
         }
-        navigation.navigate("Home");
+        else if (password === "") {
+            return setError("password is required.");
+        } else {
+            const userInfo = {
+                email: email,
+                password: password
+            }
+            const res = await axios.post("https://tour-management-server-beryl.vercel.app/api/v1/login", userInfo);
+            if (res?.data?.success) {
+                setEmail("");
+                setPassword("");
+                setError("");
+                await AsyncStorage.setItem('user', JSON.stringify(res?.data?.result));
+                Alert.alert(
+                    "🎉 Success 🎉",
+                    "You have successfully logged in!",
+                    [
+                        { text: "OK" }
+                    ],
+                    { cancelable: false }
+                );
+
+                navigation.navigate("Home")
+            }
+        }
+
     }
     return (
         <SafeAreaView className="flex-1 h-full w-full items-center justify-center relative">
@@ -56,6 +82,12 @@ const LoginScreen = () => {
                     />
                 </Animated.View>
 
+                {
+                    error && <View>
+                        <Text className="text-base font-medium text-red-500">{error}</Text>
+                    </View>
+                }
+
                 <Animated.View entering={FadeInDown.delay(300).duration(1000).springify()} className="w-full">
                     <TouchableOpacity className=" bg-[#8BD8EA] p-4 rounded-2xl w-[95%] mx-auto" onPress={onSubmit}>
                         <Text className="text-white text-center font-semibold">Login</Text>
@@ -72,7 +104,6 @@ const LoginScreen = () => {
                 </Animated.View>
 
             </View>
-
 
 
 
