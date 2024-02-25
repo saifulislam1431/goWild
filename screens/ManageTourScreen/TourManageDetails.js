@@ -135,11 +135,11 @@ const TourManageDetails = () => {
                                     uri: `${friend?.profile}`
                                 }} className="w-12 h-12 rounded-full" />
 
-                                <Text className="font-bold text-xl text-[#32a1b9]">{friend?.name}</Text>
+                                <Text className="font-bold text-xl text-[#32a1b9]">{friend?.name === user?.userName ? "You" : friend?.name}</Text>
                             </View>
                         </View>
                         <View>
-                            <Text className="font-bold text-xl text-[#32a1b9]">Wallet: 0</Text>
+                            <Text className="font-bold text-xl text-[#32a1b9]">Wallet: <Text className={`${friend?.balance < 0 ? "text-red-600" : ""}`}>{friend?.balance?.toFixed(2)}</Text></Text>
                         </View>
                     </View>) : <Text className="font-bold text-base text-red-500"> No Friend added yet! </Text>
                 }

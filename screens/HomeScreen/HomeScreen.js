@@ -5,6 +5,7 @@ import TourSummaryScreen from '../TourSummaryScreen/TourSummaryScreen';
 import ManageTourScreen from '../ManageTourScreen/ManageTourScreen';
 import Home from '../Home/Home';
 import TourManageDetails from '../ManageTourScreen/TourManageDetails';
+import Costs from '../Costs/Costs';
 
 const Drawer = createDrawerNavigator();
 
@@ -19,8 +20,17 @@ const HomeScreen = () => {
                     backgroundColor: "#8BD8EA"
                 }
             }} />
-            <Drawer.Screen name="Profile" component={ProfileScreen} options={{
-                title: "Profile",
+            <Drawer.Screen name="Expenses" component={ProfileScreen} options={{
+                title: "Cost Expenses",
+                drawerActiveTintColor: "#32a1b9",
+                drawerActiveBackgroundColor: "#ffffff",
+                drawerContentStyle: {
+                    backgroundColor: "#8BD8EA"
+                }
+            }} />
+            <Drawer.Screen name="Costs" component={Costs} options={{
+                title: "Costs",
+                drawerItemStyle: { display: 'none' },
                 drawerActiveTintColor: "#32a1b9",
                 drawerActiveBackgroundColor: "#ffffff",
                 drawerContentStyle: {

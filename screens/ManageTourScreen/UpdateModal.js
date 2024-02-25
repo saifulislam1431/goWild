@@ -44,7 +44,7 @@ const UpdateModal = ({ isModalUpdateVisible, data, handleUpdate }) => {
                 "🎉 Success 🎉",
                 "Tour Updated!",
                 [
-                    { text: "OK" }
+                    { text: "OK", onPress: () => refetch() }
                 ],
                 { cancelable: false }
             );

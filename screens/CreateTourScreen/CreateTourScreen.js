@@ -7,10 +7,12 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import useTours from '../../hooks/useTours';
 
 
 const CreateTourScreen = () => {
 
+    const { refetch } = useTours()
     const navigation = useNavigation();
     const [tourName, setTourName] = useState('');
     const [user, setUser] = useState(null);
@@ -70,7 +72,8 @@ const CreateTourScreen = () => {
                 startDate,
                 endDate,
                 destination,
-                image
+                image,
+                friends: [{ name: user?.name, profile: user?.image, email: user?.email, balance: 0 }]
             }
             const res = await axios.post("https://tour-management-server-beryl.vercel.app/api/v1/tours", data);
             if (res?.data?.success) {
@@ -78,7 +81,7 @@ const CreateTourScreen = () => {
                     "🎉 Success 🎉",
                     "Tour created.",
                     [
-                        { text: "OK" }
+                        { text: "OK", onPress: () => refetch() }
                     ],
                     { cancelable: false }
                 );
