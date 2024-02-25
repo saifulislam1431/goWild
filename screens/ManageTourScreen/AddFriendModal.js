@@ -1,15 +1,53 @@
-import React from 'react';
-import { View, StyleSheet, ScrollView, Modal, Text, TextInput, Image, Pressable } from 'react-native';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { View, StyleSheet, ScrollView, Modal, Text, TextInput, Image, Pressable, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
+import useTours from '../../hooks/useTours';
+import { useNavigation } from '@react-navigation/native';
 
 
 const AddFriendModal = ({ handleAddFriend, isAddFriendModalVisible, id }) => {
+    const [text, setText] = useState("");
+    const [users, setUser] = useState([]);
+    const { refetch } = useTours();
+    const navigation = useNavigation();
+    // console.log('====================================');
+    // console.log(users);
+    // console.log('====================================');
+
+
+
+
+    const fetchUsers = async () => {
+        const response = await axios.get(`https://tour-management-server-beryl.vercel.app//api/v1/search-user?name=${text}`)
+        setUser(response.data)
+    }
+    // console.log(text);
 
     const handleAdd = async (userData) => {
-        console.log('====================================');
-        console.log(userData, id);
-        console.log('====================================');
+
+        const response = await axios.patch(`https://tour-management-server-beryl.vercel.app/api/v1/tours/${id}/addFriend`, userData)
+        if (response.data.modifiedCount > 0) {
+            refetch();
+            Alert.alert(
+                "🎉 Success 🎉",
+                "Friend Added!",
+                [
+                    {
+                        text: "OK", onPress: () => {
+                            navigation.navigate("Manage_Tour");
+                            refetch()
+                        }
+                    }
+                ],
+                { cancelable: false }
+            );
+        }
     }
+
+    useEffect(() => {
+        fetchUsers();
+    }, [text])
 
     return (
         <View>
@@ -27,28 +65,34 @@ const AddFriendModal = ({ handleAddFriend, isAddFriendModalVisible, id }) => {
                             </Text>
                             <TextInput placeholder='Search friend by name...' placeholderTextColor={"#045326"}
                                 className="w-full"
+                                onChangeText={setText}
                             />
                         </View>
 
                         {/* List */}
-                        <View className="my-5 bg-sky-100/75 p-3 rounded-md flex flex-row items-center justify-between">
-                            <View>
-                                <View className="flex flex-row items-center space-x-2">
-                                    <Image source={{
-                                        uri: "https://i.ibb.co/tqnD2S3/man.png"
-                                    }} className="w-11 h-11" />
+                        {
+                            users.length < 0 ? <View>
+                                <Text className="text-3xl font-medium my-3 text-red-500">Not Found!</Text>
+                            </View>
+                                : users?.map(user => <View key={user?._id} className="my-5 bg-sky-100/75 p-3 rounded-md flex flex-row items-center justify-between">
+                                    <View>
+                                        <View className="flex flex-row items-center space-x-2">
+                                            <Image source={{
+                                                uri: `${user?.profile}`
+                                            }} className="w-11 h-11 rounded-full" />
 
-                                    <Text className="font-bold text-xl text-[#32a1b9]">Saiful Islam</Text>
-                                </View>
-                            </View>
-                            <View>
-                                <Pressable className="p-2 bg-[#12B659] rounded-full" onPress={() => handleAdd({ name: "Saiful islam", profile: "https://i.ibb.co/tqnD2S3/man.png", balance: 0 })}>
-                                    <Text>
-                                        <Icon name="pluscircleo" size={23} color="#ffffff" />
-                                    </Text>
-                                </Pressable>
-                            </View>
-                        </View>
+                                            <Text className="font-bold text-xl text-[#32a1b9]">{user?.userName}</Text>
+                                        </View>
+                                    </View>
+                                    <View>
+                                        <Pressable className="p-2 bg-[#12B659] rounded-full" onPress={() => handleAdd({ name: user?.userName, profile: user?.profile, email: user?.email, balance: 0 })}>
+                                            <Text>
+                                                <Icon name="pluscircleo" size={23} color="#ffffff" />
+                                            </Text>
+                                        </Pressable>
+                                    </View>
+                                </View>)
+                        }
 
                         {/* Modal Close */}
                         <Pressable className="border border-[#12B659] rounded-full flex flex-row items-center justify-start space-x-3 w-1/2 mx-auto mt-4" onPress={handleAddFriend}>

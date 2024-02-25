@@ -27,7 +27,7 @@ const TourManageDetails = () => {
         const res = tours?.find(item => item?._id == id);
         setData(res)
         setLoading(false);
-    }, [isAddFriendModalVisible, isModalUpdateVisible]);
+    }, []);
 
 
     if (toursFetching && loading) {
@@ -45,6 +45,7 @@ const TourManageDetails = () => {
 
     const handleAddFriend = () => {
         setAddFriendModalVisible(false);
+        refetch();
     };
 
     const handleDelete = async (id) => {
@@ -118,7 +119,7 @@ const TourManageDetails = () => {
                             <Text className=" pr-3 font-semibold text-[#6fb98f]">Add Friend</Text>
                         </Pressable>
 
-                        <AddFriendModal handleAddFriend={handleAddFriend} isAddFriendModalVisible={isAddFriendModalVisible} id={data?.id} />
+                        <AddFriendModal handleAddFriend={handleAddFriend} isAddFriendModalVisible={isAddFriendModalVisible} id={data?._id} />
                     </View>
                 }
 
@@ -131,10 +132,10 @@ const TourManageDetails = () => {
                         <View>
                             <View className="flex flex-row items-center space-x-2">
                                 <Image source={{
-                                    uri: "https://i.ibb.co/tqnD2S3/man.png"
-                                }} className="w-11 h-11" />
+                                    uri: `${friend?.profile}`
+                                }} className="w-12 h-12 rounded-full" />
 
-                                <Text className="font-bold text-xl text-[#32a1b9]">Saiful Islam</Text>
+                                <Text className="font-bold text-xl text-[#32a1b9]">{friend?.name}</Text>
                             </View>
                         </View>
                         <View>
