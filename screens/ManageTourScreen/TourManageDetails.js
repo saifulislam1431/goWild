@@ -1,6 +1,6 @@
-import { useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Text, ActivityIndicator, ScrollView, Image, Pressable, Modal, Button } from 'react-native';
+import { View, StyleSheet, Text, ActivityIndicator, ScrollView, Image, Pressable, Modal, Button, Alert } from 'react-native';
 // import tourData from "./tour.json"
 import NavHeader from '../NavHeader/NavHeader';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -9,8 +9,10 @@ import AddFriendModal from './AddFriendModal';
 import useTours from '../../hooks/useTours';
 import moment from 'moment';
 import useUser from '../../hooks/useUser';
+import axios from 'axios';
 
 const TourManageDetails = () => {
+    const navigation = useNavigation();
     const { user } = useUser();
     const { tours, refetch, toursFetching } = useTours();
     const [isModalUpdateVisible, setModalUpdateVisible] = useState(false);
@@ -46,9 +48,36 @@ const TourManageDetails = () => {
     };
 
     const handleDelete = async (id) => {
-        console.log('====================================');
-        console.log("delete", id);
-        console.log('====================================');
+        const response = await axios.delete(`https://tour-management-server-beryl.vercel.app/api/v1/delete-tour/${id}`)
+        if (response?.data?.deletedCount > 0) {
+            refetch();
+            Alert.alert(
+                "🎉 Success 🎉",
+                "Tour Deleted!",
+                [
+                    {
+                        text: "OK", onPress: () => {
+                            navigation.navigate("Manage_Tour");
+                            refetch()
+                        }
+                    }
+                ],
+                { cancelable: false }
+            );
+        }
+    }
+
+    const handleDeleteNotification = async (id) => {
+        Alert.alert(
+            "Confirmation!",
+            "Do you sure to delete this? You won't be able to retrieve this again",
+            [
+                { text: "Yes, Delete it!", onPress: () => handleDelete(id) }
+            ],
+            {
+                cancelable: true,
+            }
+        );
     }
 
     // console.log(data);
@@ -74,7 +103,7 @@ const TourManageDetails = () => {
                 </View>
                 {
                     user?._id === data?.organizerId && <View className="mt-4 flex flex-row items-center space-x-5">
-                        <Pressable className="bg-red-600 p-3 rounded-full" onPress={() => handleDelete(data?.id)}>
+                        <Pressable className="bg-red-600 p-3 rounded-full" onPress={() => handleDeleteNotification(data?._id)}>
                             <Text><Icon name='trash-o' size={20} color="#ffffff" /></Text>
                         </Pressable>
 
