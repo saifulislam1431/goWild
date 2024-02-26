@@ -6,6 +6,8 @@ import ManageTourScreen from '../ManageTourScreen/ManageTourScreen';
 import Home from '../Home/Home';
 import TourManageDetails from '../ManageTourScreen/TourManageDetails';
 import Costs from '../Costs/Costs';
+import UpdateModal from '../ManageTourScreen/UpdateModal';
+import Summary from '../TourSummaryScreen/Summary';
 
 const Drawer = createDrawerNavigator();
 
@@ -63,6 +65,24 @@ const HomeScreen = () => {
             }} />
             <Drawer.Screen name="Manage_Tour_Details" component={TourManageDetails} options={{
                 title: "Manage Tour Details",
+                drawerItemStyle: { display: 'none' },
+                drawerActiveTintColor: "#32a1b9",
+                drawerActiveBackgroundColor: "#ffffff",
+                drawerContentStyle: {
+                    backgroundColor: "#8BD8EA"
+                }
+            }} />
+            <Drawer.Screen name="Update_Tour_Details" component={UpdateModal} options={{
+                title: "Update Tour Details",
+                drawerItemStyle: { display: 'none' },
+                drawerActiveTintColor: "#32a1b9",
+                drawerActiveBackgroundColor: "#ffffff",
+                drawerContentStyle: {
+                    backgroundColor: "#8BD8EA"
+                }
+            }} />
+            <Drawer.Screen name="Summary" component={Summary} options={{
+                title: "Summary",
                 drawerItemStyle: { display: 'none' },
                 drawerActiveTintColor: "#32a1b9",
                 drawerActiveBackgroundColor: "#ffffff",

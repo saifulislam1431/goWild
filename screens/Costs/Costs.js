@@ -9,7 +9,7 @@ import PayExpenses from './PayExpenses';
 const Costs = () => {
     const navigation = useNavigation();
     const { user } = useUser();
-    const { tours, refetch, toursFetching } = useTours();
+    const { tours, triggerRefetch, toursFetching } = useTours();
     const [isModalCostAddVisible, setModalCostAddVisible] = useState(false);
     const route = useRoute();
     const { id } = route.params;
@@ -17,12 +17,11 @@ const Costs = () => {
     const [data, setData] = useState({});
 
     useEffect(() => {
-        refetch();
         setLoading(true);
         const res = tours?.find(item => item?._id == id);
         setData(res)
         setLoading(false);
-    }, []);
+    }, [id]);
 
 
     if (toursFetching && loading) {
@@ -35,8 +34,7 @@ const Costs = () => {
 
     const handleAddCost = () => {
         setModalCostAddVisible(false);
-        refetch();
-
+        triggerRefetch()
     };
 
 

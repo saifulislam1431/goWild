@@ -8,14 +8,16 @@ import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import useTours from '../../hooks/useTours';
+import useUser from '../../hooks/useUser';
 
 
 const CreateTourScreen = () => {
 
-    const { refetch } = useTours()
+    const { refetch, triggerRefetch } = useTours()
     const navigation = useNavigation();
     const [tourName, setTourName] = useState('');
-    const [user, setUser] = useState(null);
+    // const [user, setUser] = useState(null);
+    const { user } = useUser();
     const [description, setDescription] = useState('');
     const [itinerary, setItinerary] = useState('');
     const [destination, setDestination] = useState('');
@@ -50,9 +52,6 @@ const CreateTourScreen = () => {
         else if (transportation === "") {
             return setError("Transportation is required.");
         }
-        else if (image === "") {
-            return setError("Image is required.");
-        }
         else if (cost === 0) {
             return setError("Cost is required.");
         }
@@ -72,8 +71,8 @@ const CreateTourScreen = () => {
                 startDate,
                 endDate,
                 destination,
-                image,
-                friends: [{ name: user?.name, profile: user?.image, email: user?.email, balance: 0 }]
+                image: image === "" ? "https://i.ibb.co/ZNLWRjp/Chile-Photo-Tour-Beautiful-Nature-18.jpg" : image,
+                friends: [{ name: user?.userName, profile: user?.profile, email: user?.email, balance: 0 }]
             }
             const res = await axios.post("https://tour-management-server-beryl.vercel.app/api/v1/tours", data);
             if (res?.data?.success) {
@@ -81,7 +80,7 @@ const CreateTourScreen = () => {
                     "🎉 Success 🎉",
                     "Tour created.",
                     [
-                        { text: "OK", onPress: () => refetch() }
+                        { text: "OK", onPress: () => triggerRefetch() }
                     ],
                     { cancelable: false }
                 );
@@ -93,15 +92,15 @@ const CreateTourScreen = () => {
 
     }
 
-    const fetchUser = async () => {
-        const value = await AsyncStorage.getItem('user');
-        const info = JSON.parse(value);
-        setUser(info)
-    }
+    // const fetchUser = async () => {
+    //     const value = await AsyncStorage.getItem('user');
+    //     const info = JSON.parse(value);
+    //     setUser(info)
+    // }
 
-    useEffect(() => {
-        fetchUser()
-    }, [])
+    // useEffect(() => {
+    //     fetchUser()
+    // }, [])
 
     // console.log(user);
 

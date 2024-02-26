@@ -5,20 +5,23 @@ import HomeScreen from '../screens/HomeScreen/HomeScreen';
 import LoginScreen from '../screens/LoginScreen/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen/RegisterScreen';
 import useUser from '../hooks/useUser';
-import { useEffect, useState } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-// import ProfileScreen from '../screens/ProfileScreen/ProfileScreen';
-// import CreateTourScreen from '../screens/CreateTourScreen/CreateTourScreen';
-// import TourSummaryScreen from '../screens/TourSummaryScreen/TourSummaryScreen';
-// import ManageTourScreen from '../screens/ManageTourScreen/ManageTourScreen';
+import { ActivityIndicator, ScrollView, View } from 'react-native';
 const Stack = createStackNavigator();
 
 
 
 const Navigation = () => {
+    const { user, loading } = useUser();
+    if (loading) {
+        return (
+            <ScrollView className="flex-1 items-center justify-center w-full h-full">
+                <ActivityIndicator size="large" color="#32a1b9" />
+            </ScrollView>
+        );
+    }
     return (
         <NavigationContainer>
-            <Stack.Navigator initialRouteName='Welcome' screenOptions={{
+            <Stack.Navigator initialRouteName={user !== null ? "Home" : "Welcome"} screenOptions={{
                 headerShown: false,
             }}>
                 <Stack.Screen name="Welcome" component={WelcomeScreen} />

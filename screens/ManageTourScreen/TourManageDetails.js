@@ -14,20 +14,12 @@ import axios from 'axios';
 const TourManageDetails = () => {
     const navigation = useNavigation();
     const { user } = useUser();
-    const { tours, refetch, toursFetching } = useTours();
-    const [isModalUpdateVisible, setModalUpdateVisible] = useState(false);
+    const { tours, refetch, toursFetching, triggerRefetch } = useTours();
     const [isAddFriendModalVisible, setAddFriendModalVisible] = useState(false);
     const route = useRoute();
     const { id } = route.params;
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState({});
-
-    useEffect(() => {
-        refetch();
-        const res = tours?.find(item => item?._id == id);
-        setData(res)
-        setLoading(false);
-    }, []);
 
 
     if (toursFetching && loading) {
@@ -38,9 +30,12 @@ const TourManageDetails = () => {
         );
     }
 
+    // const handleOpenUpdateModal = () => {
+    //     setModalUpdateVisible(true);
+    // }
+
     const handleUpdate = () => {
-        setModalUpdateVisible(false);
-        refetch();
+        navigation.navigate('Update_Tour_Details', { id: data?._id, data: data })
     };
 
     const handleAddFriend = () => {
@@ -51,7 +46,7 @@ const TourManageDetails = () => {
     const handleDelete = async (id) => {
         const response = await axios.delete(`https://tour-management-server-beryl.vercel.app/api/v1/delete-tour/${id}`)
         if (response?.data?.deletedCount > 0) {
-            refetch();
+            triggerRefetch();
             Alert.alert(
                 "🎉 Success 🎉",
                 "Tour Deleted!",
@@ -59,7 +54,6 @@ const TourManageDetails = () => {
                     {
                         text: "OK", onPress: () => {
                             navigation.navigate("Manage_Tour");
-                            refetch()
                         }
                     }
                 ],
@@ -81,9 +75,14 @@ const TourManageDetails = () => {
         );
     }
 
-    // console.log(data);
 
 
+    useEffect(() => {
+        refetch();
+        const res = tours?.find(item => item?._id == id);
+        setData(res);
+        setLoading(false);
+    }, [id]);
 
     return (
         <ScrollView className="flex-1 h-full w-full relative bg-white">
@@ -108,11 +107,9 @@ const TourManageDetails = () => {
                             <Text><Icon name='trash-o' size={20} color="#ffffff" /></Text>
                         </Pressable>
 
-                        <Pressable className="bg-[#32a1b9] p-3 rounded-full" onPress={() => setModalUpdateVisible(true)}>
+                        <Pressable className="bg-[#32a1b9] p-3 rounded-full" onPress={handleUpdate}>
                             <Text><Icon name='edit' size={20} color="#ffffff" /></Text>
                         </Pressable>
-
-                        <UpdateModal handleUpdate={handleUpdate} isModalUpdateVisible={isModalUpdateVisible} data={data}></UpdateModal>
 
                         <Pressable className="border border-[#6fb98f] rounded-full flex flex-row items-center space-x-2" onPress={() => setAddFriendModalVisible(true)}>
                             <Text className="bg-[#6fb98f] p-3 rounded-full"><Icon name='user-plus' size={20} color="#ffffff" /></Text>

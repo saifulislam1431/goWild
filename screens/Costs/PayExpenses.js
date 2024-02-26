@@ -10,7 +10,7 @@ import useTours from '../../hooks/useTours';
 
 const PayExpenses = ({ handleAddCost, isModalCostAddVisible, id }) => {
 
-    const { refetch } = useTours();
+    const { triggerRefetch } = useTours();
     const navigation = useNavigation();
     const { user } = useUser();
     const [amount, setAmount] = useState();
@@ -33,11 +33,12 @@ const PayExpenses = ({ handleAddCost, isModalCostAddVisible, id }) => {
                 "Cost expense added!",
                 [
                     {
-                        text: "OK", onPress: () => handleAddCost()
+                        text: "OK", onPress: () => triggerRefetch()
                     }
                 ],
                 { cancelable: false }
             );
+            handleAddCost();
 
         }
     }

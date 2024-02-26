@@ -35,7 +35,6 @@ const AddFriendModal = ({ handleAddFriend, isAddFriendModalVisible, id }) => {
                 [
                     {
                         text: "OK", onPress: () => {
-                            navigation.navigate("Manage_Tour");
                             refetch()
                         }
                     }

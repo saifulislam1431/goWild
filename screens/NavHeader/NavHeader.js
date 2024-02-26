@@ -4,8 +4,10 @@ import React from 'react';
 import { Alert, Image, TextInput } from 'react-native';
 import { View, StyleSheet, SafeAreaView, Text, Pressable } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
+import useUser from '../../hooks/useUser';
 
 const NavHeader = () => {
+    const { user } = useUser();
 
     const navigation = useNavigation();
 
@@ -26,7 +28,7 @@ const NavHeader = () => {
         <SafeAreaView className="flex w-full flex-row items-center justify-between my-5 px-2 z-40">
             <View>
                 <Image source={{
-                    uri: "https://i.ibb.co/tqnD2S3/man.png"
+                    uri: `${user?.image ? user?.image : "https://i.ibb.co/tqnD2S3/man.png"}`
                 }} className="w-11 h-11" />
             </View>
 
