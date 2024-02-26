@@ -75,6 +75,39 @@ const TourManageDetails = () => {
         );
     }
 
+    const handleFriendRemove = async (email) => {
+        const response = await axios.delete(`https://tour-management-server-beryl.vercel.app/api/v1/tour/${id}/removeFriend/${email}`)
+
+        if (response?.data?.modifiedCount > 0) {
+            triggerRefetch();
+            Alert.alert(
+                "🎉 Success 🎉",
+                "Friend removed!",
+                [
+                    {
+                        text: "OK", onPress: () => {
+                            navigation.navigate("Manage_Tour");
+                        }
+                    }
+                ],
+                { cancelable: false }
+            );
+        }
+    }
+
+    const handleFriendDeleteNotification = async (email) => {
+        Alert.alert(
+            "Confirmation!",
+            "Do you sure to remove? You won't be able to retrieve this again",
+            [
+                { text: "Yes, remove!", onPress: () => handleFriendRemove(email) }
+            ],
+            {
+                cancelable: true,
+            }
+        );
+    }
+
 
 
     useEffect(() => {
@@ -138,6 +171,15 @@ const TourManageDetails = () => {
                         <View>
                             <Text className="font-bold text-xl text-[#32a1b9]">Wallet: <Text className={`${friend?.balance < 0 ? "text-red-600" : ""}`}>{friend?.balance?.toFixed(2)}</Text></Text>
                         </View>
+                        {
+                            friend?.email === user?.email ? "" : <View>
+                                <Pressable className="p-2 bg-red-500 rounded-full" onPress={() => handleFriendDeleteNotification(friend?.email)}>
+                                    <Text>
+                                        <Icon name="minus" size={20} color="#ffffff" />
+                                    </Text>
+                                </Pressable>
+                            </View>
+                        }
                     </View>) : <Text className="font-bold text-base text-red-500"> No Friend added yet! </Text>
                 }
             </View>
