@@ -9,7 +9,7 @@ import { useNavigation } from '@react-navigation/native';
 const AddFriendModal = ({ handleAddFriend, isAddFriendModalVisible, id }) => {
     const [text, setText] = useState("");
     const [users, setUser] = useState([]);
-    const { refetch } = useTours();
+    const { refetch, tours } = useTours();
     const navigation = useNavigation();
     // console.log('====================================');
     // console.log(users);
@@ -19,9 +19,12 @@ const AddFriendModal = ({ handleAddFriend, isAddFriendModalVisible, id }) => {
 
 
     const fetchUsers = async () => {
-        const response = await axios.get(`https://tour-management-server-beryl.vercel.app//api/v1/search-user?name=${text}`)
-        setUser(response.data)
-    }
+        const response = await axios.get(`https://tour-management-server-beryl.vercel.app//api/v1/search-user?name=${text}`);
+        const allFriendsEmails = tours.flatMap(tour => tour.friends.map(fr => fr.email));
+        const data = response.data.filter(friend => !allFriendsEmails.includes(friend.email));
+        setUser(data);
+    };
+
     // console.log(text);
 
     const handleAdd = async (userData) => {
@@ -34,8 +37,11 @@ const AddFriendModal = ({ handleAddFriend, isAddFriendModalVisible, id }) => {
                 "Friend Added!",
                 [
                     {
-                        text: "OK", onPress: () => {
-                            refetch()
+                        text: "OK", onPress: async () => {
+                            await refetch()
+                            setText("")
+                            navigation.navigate('Manage_Tour');
+                            handleAddFriend();
                         }
                     }
                 ],

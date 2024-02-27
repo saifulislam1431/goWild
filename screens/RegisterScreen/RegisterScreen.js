@@ -78,7 +78,7 @@ const RegisterScreen = () => {
                                 "🎉 Success 🎉",
                                 "You have successfully registered! Please login.",
                                 [
-                                    { text: "OK" }
+                                    { text: "OK", onPress: () => navigation.navigate("Login") }
                                 ],
                                 { cancelable: false }
                             );
@@ -103,7 +103,7 @@ const RegisterScreen = () => {
 
             <Animated.View entering={FadeInUp.delay(100).duration(1000)} className="z-50 px-3 mt-4 absolute top-8 left-0">
                 <Pressable
-                    onPress={() => navigation.navigate("Welcome")}
+                    onPress={() => navigation.navigate("Login")}
                 >
                     <Text className="bg-[#8BD8EA] px-3  py-3 rounded-full text-white font-medium border border-[#8BD8EA]">
                         <Icon name="left" size={20} color="#ffffff" />

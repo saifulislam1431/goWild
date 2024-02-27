@@ -28,8 +28,8 @@ const NavHeader = () => {
         <SafeAreaView className="flex w-full flex-row items-center justify-between my-5 px-2 z-40">
             <View>
                 <Image source={{
-                    uri: `${user?.image ? user?.image : "https://i.ibb.co/tqnD2S3/man.png"}`
-                }} className="w-11 h-11" />
+                    uri: `${user?.profile ? user?.profile : "https://i.ibb.co/tqnD2S3/man.png"}`
+                }} className="w-11 h-11 rounded-full" />
             </View>
 
             <View className="bg-[#098B42]/10 p-2 rounded-2xl w-[70%] mx-auto border border-[#098B42] relative flex flex-row items-center ju">

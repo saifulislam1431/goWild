@@ -21,7 +21,7 @@ const Costs = () => {
         const res = tours?.find(item => item?._id == id);
         setData(res)
         setLoading(false);
-    }, [id]);
+    }, [id, tours]);
 
 
     if (toursFetching && loading) {

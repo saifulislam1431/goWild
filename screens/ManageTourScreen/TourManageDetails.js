@@ -14,7 +14,7 @@ import axios from 'axios';
 const TourManageDetails = () => {
     const navigation = useNavigation();
     const { user } = useUser();
-    const { tours, refetch, toursFetching, triggerRefetch } = useTours();
+    const { tours, refetch, toursFetching, triggerRefetch, isSuccess } = useTours();
     const [isAddFriendModalVisible, setAddFriendModalVisible] = useState(false);
     const route = useRoute();
     const { id } = route.params;
@@ -115,7 +115,7 @@ const TourManageDetails = () => {
         const res = tours?.find(item => item?._id == id);
         setData(res);
         setLoading(false);
-    }, [id]);
+    }, [id, tours]);
 
     return (
         <ScrollView className="flex-1 h-full w-full relative bg-white">

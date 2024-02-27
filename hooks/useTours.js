@@ -10,7 +10,7 @@ export const useTours = () => {
     const { user, loading } = useUser();
     const [isRefetching, setRefetching] = useState(false)
 
-    const { data: tours = [], refetch, isLoading: toursFetching } = useQuery({
+    const { data: tours = [], refetch, isLoading: toursFetching, isSuccess } = useQuery({
         queryKey: ["tours"],
         enabled: !loading && !!user?.email,
         queryFn: async () => {
@@ -40,7 +40,7 @@ export const useTours = () => {
     //     }, [])
     // );
 
-    return { tours, triggerRefetch, toursFetching, refetch };
+    return { tours, triggerRefetch, toursFetching, refetch, isSuccess };
 };
 
 export default useTours;
